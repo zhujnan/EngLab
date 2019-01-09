@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wisezone.dao.TipDao">
+	<select id="getTips" parameterType="String"  resultType="Tip">
+				select uts.user_id,
+						 uts.title,
+						 uts.start,
+						 uts.end,
+						 uts.className
+			from user_tips uts
+			 			inner JOIN act_id_membership am on   uts.user_id = am.user_id_ 
+			and am.group_id_='gly'
+			UNION 
+			select  * 
+			from user_tips
+			where user_id = #{userId};
+	</select>
+	<insert id="saveTip" parameterType="Tip">
+		insert into user_tips values(#{userId},#{title},#{start},#{end},#{className})
+	</insert>
+	<delete id="deleteTip" parameterType="Tip">
+		delete from user_tips where user_id=#{userId} and  end=#{end} 
+		and title=#{title}
+	</delete>
+</mapper> 
